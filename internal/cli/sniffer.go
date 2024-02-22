@@ -24,4 +24,5 @@ func Execute() {
 func init() {
 	rootCmd.Flags().String("interface", "", "Game interface to listen")
 	rootCmd.Flags().String("host", "", "Api host")
+	rootCmd.Flags().String("token", "", "Server token")
 }

@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"github.com/spf13/cobra"
 )
@@ -46,6 +47,7 @@ func Sniff(cmd *cobra.Command, args []string) {
 			continue
 		}
 		fmt.Println("----------------------------")
+		fmt.Println(packet.Layer(layers.LayerTypeTCP).(*layers.TCP).SrcPort.String())
 		fmt.Println(string(packet.ApplicationLayer().Payload()))
 		// send to api
 	}

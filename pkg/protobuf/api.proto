@@ -1,0 +1,15 @@
+syntax = "proto3";
+package protobuf;
+option go_package = "github.com/FrakenboK/j8-sniffer/pkg/protobuf";
+
+message NetworkData {
+  bytes ApplicationData = 1;
+  string DstPort = 2;
+  string SrcPort = 3;
+}
+
+message EmptyResponse {}
+
+service NetworkSnifferApi {
+  rpc ProcessNetworkData (NetworkData) returns (EmptyResponse) {}
+}
