@@ -4,28 +4,31 @@ import (
 	"fmt"
 	"log"
 
+	grpcclient "github.com/FrakenboK/j8-sniffer/internal/grpc_client"
+	"github.com/FrakenboK/j8-sniffer/internal/sniffer/config"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"
 	"github.com/google/gopacket/pcap"
 	"github.com/spf13/cobra"
 )
 
-func Sniff(cmd *cobra.Command, args []string) {
-	netInterface, err := cmd.Flags().GetString("interface")
-	if err != nil || len(netInterface) == 0 {
-		cmd.Help()
-		return
-	}
+type Sniffer struct {
+	cfg    *config.Config
+	client *grpcclient.Client
+}
 
-	apiHost, err := cmd.Flags().GetString("host")
-	if err != nil || len(apiHost) == 0 {
-		cmd.Help()
-		return
+func Init(cfg *config.Config, client *grpcclient.Client) *Sniffer {
+	sniffer := &Sniffer{
+		cfg:    cfg,
+		client: client,
 	}
+	return sniffer
+}
 
-	handle, err := pcap.OpenLive(netInterface, 65536, true, pcap.BlockForever)
+func (sn *Sniffer) Run(cmd *cobra.Command, args []string) {
+	handle, err := pcap.OpenLive(sn.cfg.Api.Interface, 65536, true, pcap.BlockForever)
 	if err != nil {
-		fmt.Printf("Error: invalid interface %s\n", netInterface)
+		fmt.Printf("Error: invalid interface %s\n", sn.cfg.Api.Interface)
 		fmt.Printf("Warning: run j8 out of sudo!\n")
 		cmd.Help()
 		return
@@ -46,9 +49,11 @@ func Sniff(cmd *cobra.Command, args []string) {
 		if app == nil {
 			continue
 		}
-		fmt.Println("----------------------------")
-		fmt.Println(packet.Layer(layers.LayerTypeTCP).(*layers.TCP).SrcPort.String())
-		fmt.Println(string(packet.ApplicationLayer().Payload()))
-		// send to api
+
+		data := packet.ApplicationLayer().Payload()
+		srcPort := packet.Layer(layers.LayerTypeTCP).(*layers.TCP).SrcPort.String()
+		dstPort := packet.Layer(layers.LayerTypeTCP).(*layers.TCP).DstPort.String()
+
+		sn.client.Send(data, dstPort, srcPort)
 	}
 }

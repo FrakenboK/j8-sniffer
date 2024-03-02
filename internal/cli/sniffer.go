@@ -3,15 +3,15 @@ package cli
 import (
 	"os"
 
-	"github.com/FrakenboK/j8-sniffer/internal/sniffer"
+	"github.com/FrakenboK/j8-sniffer/internal/infra"
 	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "j8-sniffer",
+	Use:   "j8 sniffer",
 	Short: "CTF Attack/Defence sniffer by cR4.sh",
 	Long:  ``,
-	Run:   sniffer.Sniff,
+	Run:   infra.Init,
 }
 
 func Execute() {

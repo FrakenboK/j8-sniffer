@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/FrakenboK/j8-sniffer/internal/config"
+	"github.com/FrakenboK/j8-sniffer/internal/servers/config"
 	"github.com/FrakenboK/j8-sniffer/pkg/protobuf"
 )
 

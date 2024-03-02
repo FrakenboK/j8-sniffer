@@ -6,7 +6,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/FrakenboK/j8-sniffer/internal/config"
+	"github.com/FrakenboK/j8-sniffer/internal/servers/config"
 	"github.com/FrakenboK/j8-sniffer/internal/servers/grpc_api"
 )
 

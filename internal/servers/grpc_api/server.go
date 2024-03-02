@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/FrakenboK/j8-sniffer/internal/config"
+	"github.com/FrakenboK/j8-sniffer/internal/servers/config"
 	"github.com/FrakenboK/j8-sniffer/internal/servers/grpc_api/service"
 	"github.com/FrakenboK/j8-sniffer/pkg/protobuf"
 	"google.golang.org/grpc"
